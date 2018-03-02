@@ -274,6 +274,26 @@ class CouchDBClient
         }
         return $this->httpClient->request('GET', $allDocsPath);
     }
+    
+    /**
+     * Get all documents using a selector
+     *
+     * @param array $selector
+     * @return HTTP\Response
+     */
+
+    public function searchDocs($selector)
+    {
+        $path = '/' . $this->databaseName . '/_find';
+       
+        $response = $this->httpClient->request('POST', $path, json_encode($selector));
+        if ($response->status != 200) {
+            throw HTTPException::fromResponse($path, $response);
+        }
+
+        return $response->body;
+        
+    }
 
     /**
      * Get the current version of CouchDB.
