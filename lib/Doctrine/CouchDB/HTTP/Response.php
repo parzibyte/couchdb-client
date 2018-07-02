@@ -47,6 +47,7 @@ class Response
      */
     public function __construct($status, array $headers, $body, $raw = false)
     {
+        $body = str_replace(array("\r\n", "\r"), "", $body); #Don't know why but the new lines were causing issues
         $this->status = (int) $status;
         $this->headers = $headers;
         $this->body = $raw ? $body : json_decode($body, true);
